@@ -1,0 +1,13 @@
+MAS cleanersystem {
+
+	infrastructure: Centralised
+
+	agents:
+		mari cleaner;
+		bea cleaner;
+		lali cleaner;
+		manager manager;
+
+	aslSourcePath:
+		"src/asl";
+}
