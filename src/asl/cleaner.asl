@@ -2,21 +2,25 @@
 
 /* Initial beliefs and rules */
 
-boss(manager).
+// scenario szerint mikor mégsem koszos a terem
 
 /* Initial goals */
 
-!start.
-
 /* Plans */
-//+!start : true <- .print("Megérkeztem!"); +login(self); .send(manager,tell,login).
-+!start : true <- .print("hello world."); .broadcast(tell,takarits).
 
-+takarits[source(A)] : A==manager <- .print(A," mondja, takarítsak").
-+takarits[source(A)] : not boss(A) <- .print("Hé, ",A,", te nekem ne dirigálj!").
+// koszosodás mértékét random számokkal szimuláljuk
 
-+mossfel : login(self) <- .print("Fel kell mosnom, ráérek, felmosok."); !felmos.
+// mosson fel
++mossfel(place) : true <- .print("Fel kell mosnom, ráérek, megnézem, tényleg kell-e."); .random(N); !felmos(place,N).
++!felmos(place,N) : N>=0.3 <- .print(place," koszos volt, felmostam."); .send(manager,tell,tisztapadlo(place)).
++!felmos(place,N) : N<0.3 <- .print(place," nem volt koszos."); .send(manager,tell,tisztapadlo(place)).
 
-+!felmos : true <- .print("Felmosás kész"); .send(manager, tell, tisztaterem).
+// takarítsa ki a mosdót
++tisztitsmosdot : true <- .print("Ki kell tisztítanom a mosdót, ráérek, megnézem, tényleg kell-e."); .random(N); !mosdotpucol(N).
++!mosdotpucol(N) : N>=0.5 <- .print("Mosdó koszos volt, kitakarítottam."); .send(manager,tell,tisztamosdo).
++!mosdotpucol(N) : N<0.5 <- .print("Mosdó nem volt koszos."); .send(manager,tell,tisztamosdo).
 
-+menjhaza: true <- .print("De jó, hazamegyek."); .send(manager,tell,bye).
+// ürítsen kukát
++uritskukat(place,N) : true <- .print("Ki kell vinnem a szemetet, ráérek, megnézem, tényleg kell-e."); .random(N); !viddki(place,N).
++!felmos(place,N) : N>=0.7 <- .print(place," kukája tele volt, kivittem."); .send(manager,tell,ureskuka(place)).
++!felmos(place,N) : N<0.7 <- .print(place," kukája nem volt tele."); .send(manager,tell,ureskuka(place)).
