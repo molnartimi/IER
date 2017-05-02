@@ -11,16 +11,18 @@
 // koszosodás mértékét random számokkal szimuláljuk
 
 // mosson fel
-+mossfel(place) : true <- .print("Fel kell mosnom, ráérek, megnézem, tényleg kell-e."); .random(N); !felmos(place,N).
-+!felmos(place,N) : N>=0.3 <- .print(place," koszos volt, felmostam."); .send(manager,tell,tisztapadlo(place)).
-+!felmos(place,N) : N<0.3 <- .print(place," nem volt koszos."); .send(manager,tell,tisztapadlo(place)).
-
-// takarítsa ki a mosdót
-+tisztitsmosdot : true <- .print("Ki kell tisztítanom a mosdót, ráérek, megnézem, tényleg kell-e."); .random(N); !mosdotpucol(N).
-+!mosdotpucol(N) : N>=0.5 <- .print("Mosdó koszos volt, kitakarítottam."); .send(manager,tell,tisztamosdo).
-+!mosdotpucol(N) : N<0.5 <- .print("Mosdó nem volt koszos."); .send(manager,tell,tisztamosdo).
++!mossfel(A) : true <- .random(N); !felmos(A,N); .send(manager,tell,szabad); .send(manager,tell,felmosasota(A,0)).
++!felmos(A,N) : N>=0.3 <- .print(A," koszos volt, felmostam.").
++!felmos(A,N) : N<0.3 <- .print(A," nem volt koszos.").
+// konferencia esetén nincs random
++!mindenkeppmossfel(A) : true <- .print(A,"-ban konferencia lesz, felmostam."); .send(manager,tell,szabad); .send(manager,tell,felmosasota(A,0)).
 
 // ürítsen kukát
-+uritskukat(place,N) : true <- .print("Ki kell vinnem a szemetet, ráérek, megnézem, tényleg kell-e."); .random(N); !viddki(place,N).
-+!felmos(place,N) : N>=0.7 <- .print(place," kukája tele volt, kivittem."); .send(manager,tell,ureskuka(place)).
-+!felmos(place,N) : N<0.7 <- .print(place," kukája nem volt tele."); .send(manager,tell,ureskuka(place)).
++!uritskukat(A) : true <- .random(N); !viddki(A,N); .send(manager,tell,szabad); .send(manager,tell,kukauritesota(A,0)).
++!viddki(A,N) : N>=0.7 <- .print(A," kukája tele volt, kivittem.").
++!viddki(A,N) : N<0.7 <- .print(A," kukája nem volt tele.").
+
+// takarítsa ki a mosdót
++!tisztitsmosdot : true <- .random(N); !mosdotpucol(N); .send(manager,tell,szabad).
++!mosdotpucol(N) : N>=0.5 <- .print("Mosdó koszos volt, kitakarítottam.").
++!mosdotpucol(N) : N<0.5 <- .print("Mosdó nem volt koszos.").

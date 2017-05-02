@@ -3,13 +3,13 @@ MAS cleanersystem {
 	infrastructure: Centralised
 
 	agents:
+		manager;
 		sensor;
-		tak_Mari cleaner;
-		tak_Lali cleaner;
 		tak_Bea cleaner;
 		tak_Izolda cleaner;
+		tak_Lali cleaner;
+		tak_Mari cleaner;
 		tak_Zsombor cleaner;
-		manager manager;
 
 	aslSourcePath:
 		"src/asl";
